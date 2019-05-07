@@ -93,4 +93,4 @@ def process_starting_url(folder, url, limit):
 
 process_starting_url(folder, url_main, limit)
 
-# python3 scrap_gov_edgar.py N-MFP2 1000
+# python scrap_gov_edgar.py N-MFP2 1000
