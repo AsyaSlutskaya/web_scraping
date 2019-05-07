@@ -1,6 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
 import os
+from sys import argv
+
+script_name, folder, limit = argv
 
 input_string = 'S000004283'
 url_main = 'https://www.sec.gov/cgi-bin/browse-edgar?CIK=' + input_string + '&owner=exclude&action=getcompany&Find=Search'
@@ -59,10 +62,11 @@ def process_starting_url(folder, url, limit):
     next_url = url
     links_count = 0
     print("Processing url " + next_url)
-    os.mkdir(folder)
-    print("Directory", folder, " was created")
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+        print("Directory", folder, " was created")
 
-    while True and links_count < limit:
+    while True and links_count < int(limit):
         filling_detail_page_soup = BeautifulSoup(get_html(next_url), features="html.parser")
 
         fillings_document_links = find_fillings_document_links(filling_detail_page_soup)
@@ -87,4 +91,6 @@ def process_starting_url(folder, url, limit):
             return
 
 
-process_starting_url("N-MFP2", url_main, 1000)
+process_starting_url(folder, url_main, limit)
+
+# python3 scrap_gov_edgar.py N-MFP2 1000
